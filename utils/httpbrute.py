@@ -23,7 +23,8 @@ def http_brute(url, username, password_file, success_string, verbose):
 
     for password in passwords:
         response = requests.post(url, data = {'username': username, 'password': password})
-        logging.info('{} {} {}'.format(username, password, response.status_code))
+        masked_password = password[0] + '*' * (len(password) - 2) + password[-1] if len(password) > 2 else '*' * len(password)
+        logging.info('{} {} {}'.format(username, masked_password, response.status_code))
         if success_string in response.text:
             print('cracked!', username, password)
             break
